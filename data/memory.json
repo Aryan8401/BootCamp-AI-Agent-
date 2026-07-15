@@ -1,0 +1,170 @@
+[
+    {
+        "role": "user",
+        "content": "Hello"
+    },
+    {
+        "role": "assistant",
+        "content": "Hi! how are you"
+    },
+    {
+        "role": "user",
+        "content": "Hello"
+    },
+    {
+        "role": "assistant",
+        "content": "Hi! how are you"
+    },
+    {
+        "role": "user",
+        "content": "Hello"
+    },
+    {
+        "role": "assistant",
+        "content": "Hi! how are you"
+    },
+    {
+        "role": "user",
+        "content": "Hello, how are you?"
+    },
+    {
+        "role": "assistant",
+        "content": "I'm good, thank you!"
+    },
+    {
+        "role": "user",
+        "content": "hi"
+    },
+    {
+        "role": "assistant",
+        "content": "Hi!"
+    },
+    {
+        "role": "user",
+        "content": "hi"
+    },
+    {
+        "role": "assistant",
+        "content": "Hi!"
+    },
+    {
+        "role": "user",
+        "content": "do you have any tool"
+    },
+    {
+        "role": "assistant",
+        "content": "Yes, I have a calculator tool that can perform various numerical computations."
+    },
+    {
+        "role": "user",
+        "content": "my name is aryan"
+    },
+    {
+        "role": "assistant",
+        "content": "Nice to meet you, Aryan!"
+    },
+    {
+        "role": "user",
+        "content": "tell me my name"
+    },
+    {
+        "role": "assistant",
+        "content": "Your name is Aryan."
+    },
+    {
+        "role": "user",
+        "content": "hlo"
+    },
+    {
+        "role": "assistant",
+        "content": "Hi!"
+    },
+    {
+        "role": "user",
+        "content": "tell me tool you have"
+    },
+    {
+        "role": "assistant",
+        "content": "I have a calculator tool."
+    },
+    {
+        "role": "user",
+        "content": "my name is nikhil"
+    },
+    {
+        "role": "assistant",
+        "content": "Your name is Nikhil."
+    },
+    {
+        "role": "user",
+        "content": "what is my name"
+    },
+    {
+        "role": "assistant",
+        "content": "Your name is Nikhil."
+    },
+    {
+        "role": "user",
+        "content": "hi"
+    },
+    {
+        "role": "assistant",
+        "content": "Hi!"
+    },
+    {
+        "role": "user",
+        "content": "what is 23*45"
+    },
+    {
+        "role": "assistant",
+        "content": "The result of 23*45 is 1035."
+    },
+    {
+        "role": "user",
+        "content": "what is the current time , date and weather temperature"
+    },
+    {
+        "role": "assistant",
+        "content": "{\n    \"tool\":\"time\"\n}\n{\n    \"tool\":\"weather\",\n    \"city\":\"current location\"\n}"
+    },
+    {
+        "role": "user",
+        "content": "what is current time"
+    },
+    {
+        "role": "assistant",
+        "content": "The current time is 02:31:34 PM on July 15, 2026."
+    },
+    {
+        "role": "user",
+        "content": "temperature"
+    },
+    {
+        "role": "assistant",
+        "content": "I'm not able to find the current temperature as the city is not specified. Please provide the city name to get the current temperature."
+    },
+    {
+        "role": "user",
+        "content": "delhi temperature"
+    },
+    {
+        "role": "assistant",
+        "content": "The current temperature in Delhi is 36.1°C."
+    },
+    {
+        "role": "user",
+        "content": "conver 1 dollar into indian rs"
+    },
+    {
+        "role": "assistant",
+        "content": "{\n    \"tool\":\"currency_converter\",\n    \"amount\":1,\n    \"from_currency\":\"USD\",\n    \"to_currency\":\"INR\"\n}"
+    },
+    {
+        "role": "user",
+        "content": "convert 1 USD to INR"
+    },
+    {
+        "role": "assistant",
+        "content": "1 USD is equal to 82.45 INR is incorrect, \n1 USD is equal to 96.2 INR"
+    }
+]
