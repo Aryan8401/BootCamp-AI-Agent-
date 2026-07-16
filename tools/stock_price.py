@@ -1,67 +1,67 @@
 """
 stock_price.py
 
-Tool for fetching the latest quote for a stock ticker using a public
-Yahoo Finance quote endpoint.
-"""
+Tool for fetching the latest quote for a stock ticker using
+Yahoo Finance's public chart endpoint. No API key required.
 
-from datetime import datetime
+Yahoo uses market suffixes to disambiguate tickers across exchanges,
+e.g.:
+  - US markets:      "AAPL", "TSLA"      (no suffix)
+  - NSE (India):      "TATASTEEL.NS", "RELIANCE.NS"
+  - BSE (India):       "TATASTEEL.BO", "RELIANCE.BO"
+
+Rather than require the caller to know the right suffix, this tool
+tries the bare symbol first, then NSE, then BSE, and returns the
+first one with real data.
+"""
 
 try:
     import requests
 except ImportError:
     requests = None
 
-QUOTE_URL = "https://query1.finance.yahoo.com/v8/finance/chart/"
+CHART_URL_TEMPLATE = "https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
 
+CANDIDATE_SUFFIXES = ["", ".NS", ".BO"]
 
-def _format_number(value):
-    if value is None:
-        return "N/A"
-    return f"{float(value):.2f}"
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    )
+}
 
 
 def _fetch_quote(query_symbol: str):
-    if requests is None:
-        return None
-
     response = requests.get(
-        f"{QUOTE_URL}{query_symbol}",
-        params={"interval": "1d", "range": "1mo"},
-        headers={"User-Agent": "Mozilla/5.0"},
+        CHART_URL_TEMPLATE.format(symbol=query_symbol),
+        params={"interval": "1d", "range": "5d"},
+        headers=HEADERS,
         timeout=10,
     )
-    response.raise_for_status()
 
-    payload = response.json()
-    result = payload.get("chart", {}).get("result", [])
+    if response.status_code != 200:
+        return None
+
+    data = response.json()
+    result = data.get("chart", {}).get("result")
+
     if not result:
         return None
 
-    first_result = result[0]
-    meta = first_result.get("meta", {})
-    quote = first_result.get("indicators", {}).get("quote", [{}])[0]
-    timestamps = first_result.get("timestamp", [])
+    meta = result[0].get("meta", {})
+    price = meta.get("regularMarketPrice")
 
-    if not quote or not timestamps:
-        return None
-
-    latest_timestamp = timestamps[-1]
-    close_price = quote.get("close", [None])[-1]
-    open_price = quote.get("open", [None])[-1]
-    high_price = quote.get("high", [None])[-1]
-    low_price = quote.get("low", [None])[-1]
-
-    if close_price is None:
+    if price is None:
         return None
 
     return {
-        "Symbol": meta.get("symbol", query_symbol.upper()),
-        "Close": _format_number(close_price),
-        "Open": _format_number(open_price),
-        "High": _format_number(high_price),
-        "Low": _format_number(low_price),
-        "Date": datetime.utcfromtimestamp(latest_timestamp).strftime("%Y-%m-%d"),
+        "symbol": meta.get("symbol"),
+        "price": price,
+        "previous_close": meta.get("previousClose") or meta.get("chartPreviousClose"),
+        "currency": meta.get("currency"),
+        "day_high": meta.get("regularMarketDayHigh"),
+        "day_low": meta.get("regularMarketDayLow"),
     }
 
 
@@ -74,23 +74,32 @@ def execute(arguments: dict):
     if not symbol:
         return "Stock price error: 'symbol' (ticker) is required"
 
-    raw_symbol = str(symbol).strip()
-    if not raw_symbol:
-        return "Stock price error: 'symbol' (ticker) is required"
+    raw_symbol = str(symbol).strip().upper()
+
+    suffixes_to_try = [""] if "." in raw_symbol else CANDIDATE_SUFFIXES
 
     try:
-        row = _fetch_quote(raw_symbol)
-        if row:
-            return (
-                f"{row.get('Symbol')}: {row.get('Close')} "
-                f"(open: {row.get('Open')}, high: {row.get('High')}, "
-                f"low: {row.get('Low')}, date: {row.get('Date')})"
-            )
+        for suffix in suffixes_to_try:
+            query_symbol = f"{raw_symbol}{suffix}"
+            try:
+                quote = _fetch_quote(query_symbol)
+            except Exception:
+                quote = None
 
-        return (
-            f"Stock price error: ticker '{symbol}' not found. "
-            f"Try a well-known ticker such as AAPL or TSLA."
-        )
+            if quote:
+                change = None
+                if quote["previous_close"]:
+                    change = quote["price"] - quote["previous_close"]
+
+                change_str = f", change: {change:+.2f}" if change is not None else ""
+
+                return (
+                    f"{quote['symbol']}: {quote['price']} {quote.get('currency') or ''} "
+                    f"(day high: {quote.get('day_high')}, day low: {quote.get('day_low')}"
+                    f"{change_str})"
+                )
+
+        return f"Stock price error: ticker '{symbol}' not found"
 
     except Exception as e:
         return f"Stock price error: {e}"
@@ -101,3 +110,4 @@ if __name__ == "__main__":
     print(execute({"symbol": "AAPL"}))
     print(execute({"symbol": "TSLA"}))
     print(execute({"symbol": "TATASTEEL"}))
+    print(execute({"symbol": "RELIANCE"}))
