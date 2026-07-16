@@ -1,11 +1,8 @@
-from datetime import datetime
-from zoneinfo import ZoneInfo
-
-IST = ZoneInfo("Asia/Kolkata")
+from datetime import datetime, timedelta, timezone
 
 
 def execute(argument: dict):
-    now = datetime.now(IST)
+    now = datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)
     return now.strftime("%d-%m-%Y %I:%M:%S %p") + " IST"
 
 

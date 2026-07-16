@@ -10,12 +10,16 @@ try:
     from weather import execute as weather
     from unit_converter import execute as unit_converter
     from currency_converter import execute as currency_converter
+    from news_headlines import execute as news_headlines
+    from stock_price import execute as stock_price
 except ImportError:
     from tools.calculator import execute as calculator
     from tools.time_tool import execute as time_tool
     from tools.weather import execute as weather
     from tools.unit_converter import execute as unit_converter
     from tools.currency_converter import execute as currency_converter
+    from tools.news_headlines import execute as news_headlines
+    from tools.stock_price import execute as stock_price
 
 TOOLS = {
     "calculator": calculator,
@@ -23,6 +27,8 @@ TOOLS = {
     "weather": weather,
     "unit_converter": unit_converter,
     "currency_converter": currency_converter,
+    "news_headlines": news_headlines,
+    "stock_price": stock_price,
 }
 
 
@@ -40,6 +46,9 @@ def list_tools():
 
 if __name__ == "__main__":
     print("Registered tools\n")
+    print(list_tools())
+    print("\n")
+
     print(
         execute_tool(
             "calculator",
@@ -49,16 +58,16 @@ if __name__ == "__main__":
         )
     )
     print("\n")
-    
+
     print(
         execute_tool(
             "time",
             {}
-        )       
+        )
     )
-    
+
     print("\n")
-    
+
     print(
         execute_tool(
             "weather",
@@ -90,6 +99,28 @@ if __name__ == "__main__":
                 "amount": 100,
                 "from_currency": "USD",
                 "to_currency": "INR"
+            }
+        )
+    )
+
+    print("\n")
+
+    print(
+        execute_tool(
+            "news_headlines",
+            {
+                "topic": "India"
+            }
+        )
+    )
+
+    print("\n")
+
+    print(
+        execute_tool(
+            "stock_price",
+            {
+                "symbol": "AAPL"
             }
         )
     )
