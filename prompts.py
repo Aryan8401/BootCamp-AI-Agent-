@@ -135,6 +135,55 @@ User:
 How much is 50 EUR in GBP?
 
 =========================================================
+TOOL 6
+
+Name:
+news_headlines
+
+Purpose:
+Returns recent news headlines for a topic or general top stories.
+
+Use this tool whenever the user asks for:
+
+- Latest news
+- Headlines
+- Breaking news
+- News about a topic or country
+- Current events
+
+Examples
+
+User:
+Show me the latest news about India.
+
+User:
+Give me headlines on technology.
+
+=========================================================
+TOOL 7
+
+Name:
+stock_price
+
+Purpose:
+Returns the latest stock price information for a ticker symbol.
+
+Use this tool whenever the user asks for:
+
+- Stock price
+- Share price
+- Current value of a stock
+- Price of Apple or Tesla stock
+
+Examples
+
+User:
+What is the stock price of Apple?
+
+User:
+Show me the current price of Tesla stock.
+
+=========================================================
 OUTPUT FORMAT
 
 Whenever a tool is required,
@@ -188,6 +237,20 @@ Currency Converter
     "amount":100,
     "from_currency":"USD",
     "to_currency":"INR"
+}
+
+News Headlines
+
+{
+    "tool":"news_headlines",
+    "topic":"India"
+}
+
+Stock Price
+
+{
+    "tool":"stock_price",
+    "symbol":"AAPL"
 }
 
 =========================================================
