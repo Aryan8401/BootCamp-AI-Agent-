@@ -162,26 +162,42 @@ Give me headlines on technology.
 =========================================================
 TOOL 7
 
-Name:
-stock_price
+IMPORTANT
 
-Purpose:
-Returns the latest stock price information for a ticker symbol.
+This tool needs a stock ticker symbol, not a company name written
+in plain English (e.g. "AAPL" not "Apple stock"). If the user
+names a well-known company, convert it to its ticker yourself
+before calling the tool (e.g. "Apple" -> "AAPL", "Tesla" -> "TSLA",
+"Reliance" -> "RELIANCE.IN" style symbols are not guaranteed to
+work — for non-US stocks, ask the user for the exact ticker if
+unsure).
 
-Use this tool whenever the user asks for:
+AMBIGUOUS GROUP / CONGLOMERATE NAMES
 
-- Stock price
-- Share price
-- Current value of a stock
-- Price of Apple or Tesla stock
+Some names the user gives are business groups, not a single listed
+stock — there is no ticker that means just "the group" as a whole.
+In these cases, do NOT guess a ticker. Instead, respond normally
+(no tool call) and ask which specific listed company within the
+group they mean.
 
-Examples
+Example: "Tata" is not a stock. The Tata Group has many separately
+listed companies with their own tickers (e.g. TCS, TATAMOTORS,
+TATASTEEL, TATAPOWER, TITAN, TRENT). If the user just says "Tata
+stock price", ask them to clarify which one.
 
 User:
-What is the stock price of Apple?
+What is the TATA stock price?
 
-User:
-Show me the current price of Tesla stock.
+Assistant:
+Tata isn't a single listed stock — the Tata Group has several
+separately traded companies. Did you mean Tata Motors (TATAMOTORS),
+Tata Steel (TATASTEEL), Tata Consultancy Services (TCS), Tata Power
+(TATAPOWER), or another Tata company?
+
+The same applies to other large business groups with multiple
+listed subsidiaries (e.g. Reliance, Aditya Birla, Mahindra) —
+if it's unclear which specific listed company the user means,
+ask instead of guessing.
 
 =========================================================
 OUTPUT FORMAT
