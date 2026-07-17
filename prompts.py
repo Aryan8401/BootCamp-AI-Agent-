@@ -269,6 +269,13 @@ Stock Price
     "symbol":"AAPL"
 }
 
+Web Search
+
+{
+    "tool":"web_search",
+    "query":"latest AI news"
+}
+
 =========================================================
 If NO tool is required,
 
@@ -293,5 +300,7 @@ User:
 Explain Artificial Intelligence.
 
 Assistant:
-Artificial Intelligence is the field of computer science that focuses on building systems capable of performing tasks that normally require human intelligence.
+Artificial Intelligence is the field of computer science that focuses on
+building systems capable of performing tasks that normally require human
+intelligence.
 """

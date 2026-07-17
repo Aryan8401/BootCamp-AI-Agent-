@@ -12,6 +12,7 @@ try:
     from currency_converter import execute as currency_converter
     from news_headlines import execute as news_headlines
     from stock_price import execute as stock_price
+    from web_search import execute as web_search
 except ImportError:
     from tools.calculator import execute as calculator
     from tools.time_tool import execute as time_tool
@@ -20,6 +21,7 @@ except ImportError:
     from tools.currency_converter import execute as currency_converter
     from tools.news_headlines import execute as news_headlines
     from tools.stock_price import execute as stock_price
+    from tools.web_search import execute as web_search
 
 TOOLS = {
     "calculator": calculator,
@@ -29,20 +31,22 @@ TOOLS = {
     "currency_converter": currency_converter,
     "news_headlines": news_headlines,
     "stock_price": stock_price,
+    "web_search": web_search,
 }
 
 
 def execute_tool(tool_name: str, arguments: dict):
     tool = TOOLS.get(tool_name)
-    
+
     if tool is None:
         return f"Unknown tool: {tool_name}"
-    
+
     return tool(arguments)
 
 
 def list_tools():
     return list(TOOLS.keys())
+
 
 if __name__ == "__main__":
     print("Registered tools\n")
